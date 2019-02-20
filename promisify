@@ -1,0 +1,19 @@
+
+/* 
+	promisify all functions of mongoskin for use without build 'new Promise()'
+	
+	for use need add to function 'Async' 
+*/
+
+function Promisify(){
+  const promise = require("bluebird");
+  const mongoskin = require("mongoskin");
+  Object.keys(mongoskin).map((key) => {
+    let value = mongoskin[key];
+    if (typeof value === "function") {
+      promise.promisifyAll(value);
+      promise.promisifyAll(value.prototype);
+    }
+  });
+  promise.promisifyAll(mongoskin);
+}
